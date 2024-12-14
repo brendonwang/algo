@@ -1,0 +1,3 @@
+[[languages.cpp.environments]]
+CXX = "g++-14"
+CXXFLAGS = ["-std=c++17", "-Wall", "-D_GLIBCXX_DEBUG"]
