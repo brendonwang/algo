@@ -1,4 +1,4 @@
-// competitive-verifier: PROBLEM https://judge.yosupo.jp/problem/two_sat
+#define PROBLEM "https://judge.yosupo.jp/problem/two_sat"
 
 #include <bits/stdc++.h>
 
@@ -145,7 +145,7 @@ const ll infl = 4e18;
 const ll MOD = 1e9 + 7;
 const ll MAXN = 1e7 + 5;
 
-#include "../../misc/2sat.h"
+#include "../../library/misc/2sat.h"
 
 
 int solve() {

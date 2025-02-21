@@ -1,4 +1,4 @@
-// competitive-verifier: PROBLEM https://judge.yosupo.jp/problem/unionfind
+#define PROBLEM "https://judge.yosupo.jp/problem/unionfind"
 
 #include <bits/stdc++.h>
 
@@ -87,7 +87,7 @@ const ll infl = 4e18;
 const ll MOD = 1e9 + 7;
 const ll MAXN = 2e5 + 5;
 
-#include "../../data-structures/UnionFind.h"
+#include "../../library/data-structures/UnionFind.h"
 
 int solve() {
 	int n, q;

@@ -43,7 +43,7 @@ def main():
     )
     parser.add_argument("file", metavar="FILE", type=str,
                         help="The file path relative to the workspace directory or an absolute path.")
-    parser.add_argument("--workspace", type=str, default=os.path.expanduser("~/workspace/brendon/algo"),
+    parser.add_argument("--workspace", type=str, default=os.path.expanduser("~/workspace/brendon/algo/library"),
                         help="The workspace directory for relative file paths. Default: %(default)s")
 
     args = parser.parse_args()
