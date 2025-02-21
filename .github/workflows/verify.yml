@@ -4,10 +4,6 @@ on:
     branches:
       - "main"
   workflow_dispatch:
-    inputs:
-      ignore_prev_result:
-        type: boolean
-        default: false
 
 # Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
 permissions:
@@ -22,12 +18,12 @@ concurrency:
 
 jobs:
   setup:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
 
       - name: Set up competitive-verifier
-        uses: adamant-pwn/actions/setup@patch-1
+        uses: competitive-verifier/actions/setup@v2
         with:
           cache-pip: true
 
@@ -37,10 +33,10 @@ jobs:
         with:
           output-path: verify_files.json
           # Specify patterns
-          exclude: |
-                images/
+          # include: your-own-include/
+          # exclude: your-own-exclude/
           # If you have config.toml
-          config: .verify-helper/config.toml
+          # config: .verify-helper/config.toml
       - name: parse-doxygen
         uses: competitive-verifier/actions/parse-doxygen@v2
         with:
@@ -64,7 +60,7 @@ jobs:
           retention-days: 1
 
   verify:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-latest
     needs: [setup]
     env:
       SPLIT_SIZE: "20"
@@ -76,24 +72,12 @@ jobs:
            "10", "11", "12", "13", "14", "15", "16", "17", "18", "19"]
     steps:
       - uses: actions/checkout@v4
-        with:
-          fetch-depth: 2147483647
-
-      - name: Restore cached results
-        if: ${{ ! inputs.ignore_prev_result }}
-        uses: actions/cache/restore@v4
-        id: restore-cached-results
-        with:
-          path: ${{github.workspace}}/merged-result.json
-          key: ${{ runner.os }}-verify-result-${{ github.sha }}
-          restore-keys: |
-            ${{ runner.os }}-verify-result-
 
       - name: Download verify_files.json
         uses: competitive-verifier/actions/download-verify-artifact@v2
 
       - name: Set up competitive-verifier
-        uses: adamant-pwn/actions/setup@patch-1
+        uses: competitive-verifier/actions/setup@v2
         with:
           cache-pip: true
 
@@ -104,7 +88,8 @@ jobs:
           split-size: ${{ env.SPLIT_SIZE }}
           split-index: ${{ matrix.index }}
           timeout: 1800
-          prev-result: ${{ steps.restore-cached-results.outputs.cache-hit && 'merged-result.json' || ''}}
+        env:
+          YUKICODER_TOKEN: ${{secrets.YUKICODER_TOKEN}}
 
       - name: Upload result artifact
         uses: actions/upload-artifact@v4
@@ -114,7 +99,7 @@ jobs:
           retention-days: 1
 
   docs-and-check:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-latest
     needs: [verify]
     outputs:
       upload-pages: ${{steps.upload-pages.outcome == 'success'}}
@@ -144,26 +129,16 @@ jobs:
           SRCDIR: .artifacts/Bundled-${{ runner.os }}
   
       - name: Set up competitive-verifier
-        uses: adamant-pwn/actions/setup@patch-1
+        uses: competitive-verifier/actions/setup@v2
         with:
           cache-pip: true
 
-      - name: Merge results
-        uses: competitive-verifier/actions/merge-result@v2
-        with:
-          result-files: ${{ steps.all-artifacts.outputs.artifacts-root }}/Result-*/result.json
-          output-path: ${{github.workspace}}/merged-result.json
       - name: Docs
         uses: competitive-verifier/actions/docs@v2
         with:
-          verify-result: ${{github.workspace}}/merged-result.json
+          verify-result: ${{ steps.all-artifacts.outputs.artifacts-root }}/Result-*/result.json
           destination: _jekyll
           write-summary: true
-      - name: Save result
-        uses: actions/cache/save@v4
-        with:
-          path: ${{github.workspace}}/merged-result.json
-          key: ${{ runner.os }}-verify-result-${{ github.sha }}
 
       - name: Setup Pages
         uses: actions/configure-pages@v4
@@ -188,8 +163,8 @@ jobs:
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-latest
     steps:
       - name: Deploy to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@v4
+        uses: actions/deploy-pages@v3
