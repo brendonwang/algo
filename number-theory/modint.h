@@ -1,8 +1,8 @@
-const int M = 998244353;
+#pragma once
 
-//template <int M = M>
+template<int M = MOD>
 struct mint {
-	int v;
+	long long v;
 
 	mint() : v(0) {}
 
@@ -14,21 +14,21 @@ struct mint {
 	}
 
 	friend istream &operator>>(istream &stream, mint &val) {
-		int x;
+		long long x;
 		stream >> x;
 		val.v = x >= 0 ? x % M : x + (-x + M - 1) / M * M;
 		return stream;
 	}
 
-	operator int() const { return v; }
+	operator ll() const { return v; }
 
 	mint &operator++() {
-		if (++v >= M)v -= M;
+		if (++v >= M) { v -= M; }
 		return *this;
 	}
 
 	mint &operator--() {
-		if (--v < 0)v += M;
+		if (--v < 0) { v += M; }
 		return *this;
 	}
 
@@ -54,18 +54,16 @@ struct mint {
 
 	mint &operator*=(const mint &y) {
 		v = ((long long) v * y.v) % M;
-		return this;
+		return *this;
 	}
 
-	mint operator(
-	const mint &y
-	)const {
+	mint operator*(const mint &y) const {
 		mint x = *this;
 		return x *= y;
 	}
 
 	mint &operator%=(const mint &y) {
-		if (y.v)v %= y.v;
+		if (y.v) { v %= y.v; }
 		return *this;
 	}
 
@@ -85,7 +83,7 @@ struct mint {
 
 	mint Pow(int y) const {
 		mint r = 1, x = v;
-		for (y <<= 1; y >>= 1; x = x * x)if (y & 1)r = r * x;
+		for (y <<= 1; y >>= 1; x = x * x) { if (y & 1) { r = r * x; }}
 		return r;
 	}
 

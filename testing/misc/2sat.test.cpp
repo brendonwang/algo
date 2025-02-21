@@ -1,3 +1,5 @@
+#define PROBLEM "https://judge.yosupo.jp/problem/two_sat"
+
 #include <bits/stdc++.h>
 
 #include <ext/pb_ds/assoc_container.hpp>
@@ -140,10 +142,31 @@ auto vectorize(T *a, int n, Sizes... sizes) {
 /* CONSTANTS */
 const int inf = 2e9;
 const ll infl = 4e18;
-const ll MOD = 998244353;
-const ll MAXN = 2e5 + 5;
+const ll MOD = 1e9 + 7;
+const ll MAXN = 1e7 + 5;
+
+#include "../../misc/2sat.h"
+
 
 int solve() {
+	string useless;
+	cin >> useless >> useless;
+	int n, m;
+	cin >> n >> m;
+	two_sat sat(n);
+	for (int i = 0; i < m; ++i) {
+		int a, b;
+		cin >> a >> b >> useless;
+		sat.add_clause_or(abs(a) - 1, a > 0, abs(b) - 1, b > 0);
+	}
+	cout << "s " << (sat.satisfiable() ? "SATISFIABLE" : "UNSATISFIABLE") << '\n';
+	if (sat.satisfiable()) {
+		cout << "v";
+		for (int i = 0; i < n; ++i) {
+			cout << (sat.answer[i] ? " " : " -") << i + 1;
+		}
+		cout << " 0";
+	}
 	return 0;
 }
 

@@ -1,4 +1,4 @@
-#define PROBLEM https://onlinejudge.u-aizu.ac.jp/courses/library/3/DSL/2/DSL_2_H
+#define PROBLEM "https://judge.yosupo.jp/problem/binomial_coefficient_prime_mod"
 
 #include <bits/stdc++.h>
 
@@ -68,18 +68,20 @@ T power(T x, T y) {
 }
 
 /* MACROS */
-#define clearall(arr) memset(arr, 0, sizeof arr)
-#define clearn(arr, n) memset(arr, 0, n * sizeof arr[0])
-#define resetall(arr) memset(arr, -1, sizeof arr)
-#define resetn(arr, n) memset(arr, -1, n * sizeof arr[0])
+#define clearall(arr) memset((arr), 0, sizeof (arr))
+#define clearn(arr, n) memset((arr), 0, n * sizeof (arr)[0])
+#define resetall(arr) memset((arr), -1, sizeof (arr))
+#define resetn(arr, n) memset((arr), -1, n * sizeof (arr)[0])
 #define YESNO(condition) cout << ((condition) ? "YES" : "NO")
-#define sfunc(a, b, c) a = c((a), (b))
+#define sfunc(a, b, c) ((a) = c((a), (b)))
 #define smin(a, b) sfunc((a), (b), min)
 #define smax(a, b) sfunc((a), (b), max)
-#define ALL(x) begin(x), end(x)
+#define ALL(x) begin((x)), end((x))
 #define SZ(a) (int)(a).size()
-#define readall(arr, n) for (int i = 0; i < n; i++) cin >> arr[i]
-#define printall(arr, n) for (int i = 0; i < n; i++) cout << arr[i] << " "
+#define readall(arr, n) for (int i = 0; i < n; i++) cin >> (arr)[i]
+#define printall(arr, n) for (int i = 0; i < n; i++) cout << (arr)[i] << " "
+#define printalldel(arr, n, del) for (int i = 0; i < n; i++) cout << (arr)[i] << del
+#define mx_val(arr) (*max_element(ALL(arr)))
 
 /* DEBUG TEMPLATE*/
 template<typename T, typename S>
@@ -140,40 +142,29 @@ auto vectorize(T *a, int n, Sizes... sizes) {
 /* CONSTANTS */
 const int inf = 2e9;
 const ll infl = 4e18;
-const ll MOD = 998244353;
-const ll MAXN = 2e5 + 5;
+const ll MOD = 1e9 + 7;
+const ll MAXN = 1e7 + 5;
 
-#include "../../data-structures/LazySegmentTree.h"
+#include "../../math/binom.h"
+
+int MOD_VAL;
+
+binomial<int> binom;
 
 int solve() {
-	int n, q;
-	cin >> n >> q;
-	lazy_segtree<ll> st(n, 0, [](ll a, ll b) -> ll { return min(a, b); },
-	                    [](ll &a, ll b, int len) {
-		                    a += b;
-	                    }, [](ll &a, ll b) { a += b; });
-	for (int i = 0; i < q; ++i) {
-		int type;
-		cin >> type;
-		if (type == 0) {
-			int l, r, x;
-			cin >> l >> r >> x;
-			st.update(l, r, x);
-		} else {
-			int l, r;
-			cin >> l >> r;
-			cout << st.query(l, r) << '\n';
-		}
-	}
-
+	int n, k;
+	cin >> n >> k;
+	cout << binom.C(n, k) << '\n';
 	return 0;
 }
 
 int main() {
 	ios::sync_with_stdio(false);
 	cin.tie(nullptr);
-	int T = 1;
-//	cin >> T;
+	int T = 1, m;
+	cin >> T >> m;
+	MOD_VAL = m;
+	binom = binomial<int>(MOD_VAL, MAXN);
 	while (T--) {
 		solve();
 	}
