@@ -32,10 +32,6 @@ jobs:
         with:
           nim-version: 1.0.6
 
-      - name: copy document_ja
-        run: |
-          mv document_ja/ src
-
       - name: Copy documents to /docs
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
