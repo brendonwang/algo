@@ -88,6 +88,8 @@ jobs:
           split-size: ${{ env.SPLIT_SIZE }}
           split-index: ${{ matrix.index }}
           timeout: 1800
+        env:
+          YUKICODER_TOKEN: ${{secrets.YUKICODER_TOKEN}}
 
       - name: Upload result artifact
         uses: actions/upload-artifact@v4
@@ -155,20 +157,14 @@ jobs:
         uses: competitive-verifier/actions/check@v2
         with:
           verify-result: ${{ steps.all-artifacts.outputs.artifacts-root }}/Result-*/result.json
-deploy:
-  if: (success() || failure()) && github.ref == 'refs/heads/main' && needs.docs-and-check.outputs.upload-pages == 'true'
-  needs: docs-and-check
-  environment:
-    name: github-pages
-    url: ${{ steps.deployment.outputs.page_url }}
-  runs-on: ubuntu-latest
-  steps:
-    - name: Deploy to GitHub Pages
-      id: deployment
-      uses: actions/deploy-pages@v3
-      with:
-        token: ${{ secrets.GITHUB_TOKEN }}
-        timeout: 600000
-        error_count: 10
-        reporting_interval: 5000
-        artifact_name: github-pages
+  deploy:
+    if: (success() || failure()) && github.ref == 'refs/heads/main' && needs.docs-and-check.outputs.upload-pages == 'true'
+    needs: docs-and-check
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v3
