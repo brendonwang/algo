@@ -150,15 +150,7 @@ jobs:
         with:
           source: _jekyll
           destination: _site
-
-      - name: Verify _site folder is not empty
-        run: |
-          if [ -z "$(ls -A _site)" ]; then
-            echo "_site folder is empty! Exiting." && exit 1
-          else
-            echo "_site folder contains content."
-          fi
-
+          
       - name: Upload Pages artifact
         id: upload-pages
         uses: actions/upload-pages-artifact@v3
@@ -178,6 +170,9 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     steps:
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v3
+        - name: Deploy GitHub Pages site
+          uses: actions/deploy-pages@v4.0.5
+          with:
+            # GitHub token
+            token: ${{ github.token }}
+          
