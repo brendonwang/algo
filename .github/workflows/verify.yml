@@ -37,6 +37,7 @@ jobs:
           # exclude: your-own-exclude/
           # If you have config.toml
           # config: .verify-helper/config.toml
+
       - name: parse-doxygen
         uses: competitive-verifier/actions/parse-doxygen@v2
         with:
@@ -51,6 +52,7 @@ jobs:
         id: test-bundled
         run: |
           echo "count=$(find .competitive-verifier/bundled/ -type f | wc -l)" >> $GITHUB_OUTPUT
+
       - name: Upload bundled
         uses: actions/upload-artifact@v4
         if: steps.test-bundled.outputs.count > 0
@@ -142,12 +144,22 @@ jobs:
 
       - name: Setup Pages
         uses: actions/configure-pages@v4
+
       - name: Build with Jekyll
         uses: actions/jekyll-build-pages@v1
         with:
           source: _jekyll
           destination: _site
-      - name: Upload artifact
+
+      - name: Verify _site folder is not empty
+        run: |
+          if [ -z "$(ls -A _site)" ]; then
+            echo "_site folder is empty! Exiting." && exit 1
+          else
+            echo "_site folder contains content."
+          fi
+
+      - name: Upload Pages artifact
         id: upload-pages
         uses: actions/upload-pages-artifact@v3
         with:
@@ -157,6 +169,7 @@ jobs:
         uses: competitive-verifier/actions/check@v2
         with:
           verify-result: ${{ steps.all-artifacts.outputs.artifacts-root }}/Result-*/result.json
+
   deploy:
     if: (success() || failure()) && github.ref == 'refs/heads/main' && needs.docs-and-check.outputs.upload-pages == 'true'
     needs: docs-and-check
@@ -168,9 +181,3 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v3
-        with:
-          # The artifact_name here is not explicitly set,
-          # so it will use the default, which is "github-pages".
-          # If you change the upload artifact name in the docs-and-check job,
-          # update this value accordingly.
-          artifact_name: github-pages
