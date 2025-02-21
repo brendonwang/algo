@@ -1,4 +1,5 @@
-// competitive-verifier: PROBLEM https://judge.yosupo.jp/problem/two_sat
+#line 1 "testing/math/Binom.test.cpp"
+// competitive-verifier: PROBLEM https://judge.yosupo.jp/problem/binomial_coefficient_prime_mod
 
 #include <bits/stdc++.h>
 
@@ -145,36 +146,66 @@ const ll infl = 4e18;
 const ll MOD = 1e9 + 7;
 const ll MAXN = 1e7 + 5;
 
-#include "../../misc/2sat.h"
+#line 2 "math/binom.h"
 
+template<typename T>
+struct binomial {
+
+	int MOD, MAXN;
+	vector<T> fact;
+	vector<T> inv;
+
+	binomial() = default;
+
+	binomial(int MOD, int MAXN) : MOD(MOD), MAXN(MAXN) {
+		fact.resize(MAXN + 1);
+		inv.resize(MAXN + 1);
+		int N = min(MAXN, MOD) - 1;
+		fact[0] = 1;
+		for (int i = 1; i <= N; i++) {
+			fact[i] = (T) (1LL * fact[i - 1] * i % MOD);
+		}
+		inv[N] = pow(fact[N], MOD - 2);
+		for (int i = N - 1; i >= 0; i--) {
+			inv[i] = (T) (1LL * inv[i + 1] * (i + 1) % MOD);
+		}
+	}
+
+	T pow(T a, int b) {
+		T res = 1;
+		while (b) {
+			if (b & 1) res = (T) (1LL * res * a % MOD);
+			a = (T) (1LL * a * a % MOD);
+			b >>= 1;
+		}
+		return res;
+	}
+
+	T C(int n, int k) {
+		if (n < k || n < 0 || k < 0 || n >= MAXN) return 0;
+		return (T) (1LL * fact[n] * inv[k] % MOD * inv[n - k] % MOD);
+	}
+};
+#line 149 "testing/math/Binom.test.cpp"
+
+int MOD_VAL;
+
+binomial<int> binom;
 
 int solve() {
-	string useless;
-	cin >> useless >> useless;
-	int n, m;
-	cin >> n >> m;
-	two_sat sat(n);
-	for (int i = 0; i < m; ++i) {
-		int a, b;
-		cin >> a >> b >> useless;
-		sat.add_clause_or(abs(a) - 1, a > 0, abs(b) - 1, b > 0);
-	}
-	cout << "s " << (sat.satisfiable() ? "SATISFIABLE" : "UNSATISFIABLE") << '\n';
-	if (sat.satisfiable()) {
-		cout << "v";
-		for (int i = 0; i < n; ++i) {
-			cout << (sat.answer[i] ? " " : " -") << i + 1;
-		}
-		cout << " 0";
-	}
+	int n, k;
+	cin >> n >> k;
+	cout << binom.C(n, k) << '\n';
 	return 0;
 }
 
 int main() {
 	ios::sync_with_stdio(false);
 	cin.tie(nullptr);
-	int T = 1;
-//	cin >> T;
+	int T = 1, m;
+	cin >> T >> m;
+	MOD_VAL = m;
+	binom = binomial<int>(MOD_VAL, MAXN);
 	while (T--) {
 		solve();
 	}

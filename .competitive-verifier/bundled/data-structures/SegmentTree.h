@@ -1,4 +1,4 @@
-#pragma once
+#line 2 "data-structures/SegmentTree.h"
 
 template<class T>
 struct segtree {
