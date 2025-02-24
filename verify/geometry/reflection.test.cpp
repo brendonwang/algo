@@ -156,7 +156,7 @@ int solve() {
 	for (int i = 0; i < q; ++i) {
 		point<long double> p;
 		cin >> p;
-		cout << fixed << setprecision(8) << p.reflect(p1, p2) << '\n';
+		cout << fixed << setprecision(10) << p.reflect(p1, p2) << '\n';
 	}
 	return 0;
 }
