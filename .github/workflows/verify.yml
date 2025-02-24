@@ -18,7 +18,7 @@ concurrency:
 
 jobs:
   setup:
-    runs-on: ubuntu-latest
+    runs-on: macos-latest
     steps:
       - uses: actions/checkout@v4
 
@@ -36,7 +36,7 @@ jobs:
           # include: your-own-include/
           # exclude: your-own-exclude/
           # If you have config.toml
-          config: .github/workflows/config.toml
+          config: .verify-helper/config.toml
 
       - name: parse-doxygen
         uses: competitive-verifier/actions/parse-doxygen@v2
@@ -62,7 +62,7 @@ jobs:
           retention-days: 1
 
   verify:
-    runs-on: ubuntu-latest
+    runs-on: macos-latest
     needs: [setup]
     env:
       SPLIT_SIZE: "20"
