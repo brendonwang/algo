@@ -101,7 +101,7 @@ jobs:
           retention-days: 1
 
   docs-and-check:
-    runs-on: ubuntu-latest
+    runs-on: macOS-latest
     needs: [verify]
     outputs:
       upload-pages: ${{steps.upload-pages.outcome == 'success'}}
