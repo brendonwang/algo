@@ -37,6 +37,7 @@ jobs:
           # exclude: your-own-exclude/
           # If you have config.toml
           # config: .verify-helper/config.toml
+
       - name: parse-doxygen
         uses: competitive-verifier/actions/parse-doxygen@v2
         with:
@@ -51,6 +52,7 @@ jobs:
         id: test-bundled
         run: |
           echo "count=$(find .competitive-verifier/bundled/ -type f | wc -l)" >> $GITHUB_OUTPUT
+
       - name: Upload bundled
         uses: actions/upload-artifact@v4
         if: steps.test-bundled.outputs.count > 0
@@ -142,12 +144,14 @@ jobs:
 
       - name: Setup Pages
         uses: actions/configure-pages@v4
+
       - name: Build with Jekyll
         uses: actions/jekyll-build-pages@v1
         with:
           source: _jekyll
           destination: _site
-      - name: Upload artifact
+          
+      - name: Upload Pages artifact
         id: upload-pages
         uses: actions/upload-pages-artifact@v3
         with:
@@ -157,6 +161,7 @@ jobs:
         uses: competitive-verifier/actions/check@v2
         with:
           verify-result: ${{ steps.all-artifacts.outputs.artifacts-root }}/Result-*/result.json
+
   deploy:
     if: (success() || failure()) && github.ref == 'refs/heads/main' && needs.docs-and-check.outputs.upload-pages == 'true'
     needs: docs-and-check
@@ -165,6 +170,9 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     steps:
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v3
+        - name: Deploy GitHub Pages site
+          uses: actions/deploy-pages@v4.0.5
+          with:
+            # GitHub token
+            token: ${{ github.token }}
+          
