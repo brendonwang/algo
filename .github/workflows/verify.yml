@@ -108,6 +108,7 @@ jobs:
         with:
           download-all: true
           artifact-root: .artifacts/
+          artifact-name: macOS-verify-files-json
 
       - name: Extract bundled
         shell: bash
