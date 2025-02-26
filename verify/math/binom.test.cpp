@@ -77,7 +77,7 @@ T power(T x, T y) {
 #define smin(a, b) sfunc((a), (b), min)
 #define smax(a, b) sfunc((a), (b), max)
 #define ALL(x) begin((x)), end((x))
-#define SZ(a) (int)(a).size()
+#define SZ(a) (int)(a).size())
 #define readall(arr, n) for (int i = 0; i < n; i++) cin >> (arr)[i]
 #define printall(arr, n) for (int i = 0; i < n; i++) cout << (arr)[i] << " "
 #define printalldel(arr, n, del) for (int i = 0; i < n; i++) cout << (arr)[i] << del
@@ -149,12 +149,12 @@ const ll MAXN = 1e7 + 5;
 
 int MOD_VAL;
 
-binomial<int> binom;
+binomial<int, MOD_VAL> *binom;
 
 int solve() {
 	int n, k;
 	cin >> n >> k;
-	cout << binom.C(n, k) << '\n';
+	cout << binom->C(n, k) << '\n';
 	return 0;
 }
 
@@ -164,7 +164,7 @@ int main() {
 	int T = 1, m;
 	cin >> T >> m;
 	MOD_VAL = m;
-	binom = binomial<int>(MOD_VAL, MAXN);
+	binom = new binomial<int, MOD_VAL>(MAXN); // Update instantiation
 	while (T--) {
 		solve();
 	}
