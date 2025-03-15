@@ -87,7 +87,7 @@ const ll infl = 4e18;
 const ll MOD = 1e9 + 7;
 const ll MAXN = 2e5 + 5;
 
-#include "../../library/data-structures/SparseTable.h"
+#include "../../library/data-structures/sparse_table.h"
 
 int solve() {
 	int n, q;
@@ -96,11 +96,11 @@ int solve() {
 	for (int i = 0; i < n; i++) {
 		cin >> v[i];
 	}
-	SparseTable sparse_table(v, inf);
+	sparse_table st(v, inf);
 	for (int i = 0; i < q; i++) {
 		int a, b;
 		cin >> a >> b;
-		cout << sparse_table.query(a, b) << '\n';
+		cout << st.query(a, b) << '\n';
 	}
 	return 0;
 }

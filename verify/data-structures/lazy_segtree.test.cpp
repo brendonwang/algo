@@ -1,3 +1,5 @@
+#define PROBLEM "https://onlinejudge.u-aizu.ac.jp/courses/library/3/DSL/2/DSL_2_G"
+
 #include <bits/stdc++.h>
 
 #include <ext/pb_ds/assoc_container.hpp>
@@ -150,7 +152,27 @@ const ll infl = 4e18;
 const ll MOD = 998244353;
 const ll MAXN = 2e5 + 5;
 
+#include "../../library/data-structures/lazy_segtree.h"
+
 int solve() {
+	int n, q;
+	cin >> n >> q;
+	lazy_segtree<ll> seg(n, 0, [](ll a, ll b) { return a + b; }, [](ll &a, ll x, int len) { a += x * len; });
+	for (int i = 0; i < q; ++i) {
+		int type;
+		cin >> type;
+		if (type == 0) {
+			int s, t, x;
+			cin >> s >> t >> x;
+			--s, --t;
+			seg.update(s, t, x);
+		} else {
+			int s, t;
+			cin >> s >> t;
+			--s, --t;
+			cout << seg.query(s, t) << '\n';
+		}
+	}
 	return 0;
 }
 

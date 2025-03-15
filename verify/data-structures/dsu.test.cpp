@@ -1,4 +1,4 @@
-#define PROBLEM "https://judge.yosupo.jp/problem/point_add_range_sum"
+#define PROBLEM "https://judge.yosupo.jp/problem/unionfind"
 
 #include <bits/stdc++.h>
 
@@ -67,8 +67,6 @@ T power(T x, T y) {
 	return res;
 }
 
-
-
 /* MACROS */
 #define clearall(arr) memset(arr, 0, sizeof arr)
 #define clearn(arr, n) memset(arr, 0, n * sizeof arr[0])
@@ -89,27 +87,21 @@ const ll infl = 4e18;
 const ll MOD = 1e9 + 7;
 const ll MAXN = 2e5 + 5;
 
-#include "../../library/data-structures/SegmentTree.h"
+#include "../../library/data-structures/dsu.h"
 
 int solve() {
 	int n, q;
 	cin >> n >> q;
-	segtree<ll> st(n, 0, [](auto a, auto b) { return a + b; });
-	vector<ll> v(n);
-	for (auto &v_i: v) {
-		cin >> v_i;
-	}
-	st.build(v);
-	while (q--) {
+	DSU dsu(n);
+	for (int i = 0; i < q; i++) {
 		int type, a, b;
 		cin >> type >> a >> b;
 		if (type == 0) {
-			st.update(a, b);
+			dsu.unite(a, b);
 		} else {
-			cout << st.query(a, b) << '\n';
+			cout << int(dsu.connected(a, b)) << '\n';
 		}
 	}
-
 	return 0;
 }
 

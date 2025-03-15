@@ -16,15 +16,13 @@ struct lazy_segtree {
 	T unit;
 	function<void(T &, T, int)> add;
 	function<T(T, T)> f;
-	function<void(T &, T)> combine;
 
-	lazy_segtree(int n, T unit, function<T(T, T)> _f, function<void(T &, T, int)> add,
-	             function<void(T &, T)> combine = [](T &a, T b) { a += b; }) : n(n),
-	                                                                           seg(4 * n, unit),
-	                                                                           lazy(4 * n, unit),
-	                                                                           f(_f),
-	                                                                           add(add),
-	                                                                           combine(combine) {}
+	lazy_segtree(int n, T unit, function<T(T, T)> f, function<void(T &, T, int)> add) : n(n),
+	                                                                                    unit(unit),
+	                                                                                    seg(4 * n, unit),
+	                                                                                    lazy(4 * n, unit),
+	                                                                                    f(f),
+	                                                                                    add(add) {}
 
 	void build(vector<T> &a) {
 		for (int i = 0; i < n; ++i) {
@@ -36,8 +34,8 @@ struct lazy_segtree {
 		int m = (xl + xr) / 2;
 		add(seg[2 * x], lazy[x], m - xl + 1);
 		add(seg[2 * x + 1], lazy[x], xr - m);
-		combine(lazy[2 * x], lazy[x]);
-		combine(lazy[2 * x + 1], lazy[x]);
+		lazy[2 * x] += lazy[x];
+		lazy[2 * x + 1] += lazy[x];
 		lazy[x] = unit;
 	}
 
@@ -46,7 +44,7 @@ struct lazy_segtree {
 			return;
 		}
 		if (l <= xl && xr <= r) {
-			combine(lazy[x], v);
+			lazy[x] += v;
 			add(seg[x], v, xr - xl + 1);
 			return;
 		}
