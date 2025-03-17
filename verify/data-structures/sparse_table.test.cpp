@@ -96,7 +96,7 @@ int solve() {
 	for (int i = 0; i < n; i++) {
 		cin >> v[i];
 	}
-	sparse_table st(v, inf);
+	sparse_table<int> st(v, inf, [](auto a, auto b) { return min(a, b); });
 	for (int i = 0; i < q; i++) {
 		int a, b;
 		cin >> a >> b;

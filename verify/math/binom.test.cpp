@@ -149,7 +149,7 @@ const ll MAXN = 1e7 + 5;
 
 int MOD_VAL;
 
-binomial<int, MOD_VAL> *binom;
+binomial<MOD_VAL> *binom;
 
 int solve() {
 	int n, k;
@@ -164,7 +164,7 @@ int main() {
 	int T = 1, m;
 	cin >> T >> m;
 	MOD_VAL = m;
-	binom = new binomial<int, MOD_VAL>(MAXN); // Update instantiation
+	binom = new binomial<MOD_VAL>(MAXN); // Update instantiation
 	while (T--) {
 		solve();
 	}
