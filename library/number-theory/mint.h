@@ -72,12 +72,12 @@ struct mint {
 		*this = this->pow(y);
 		return *this;
 	}
-	mint pow(int y) const {
+	mint pow(long long y) const {
 		mint r = 1, x = v;
 		for (y <<= 1; y >>= 1; x = x * x) { if (y & 1) { r = r * x; }}
 		return r;
 	}
-	mint inv(int a) const { return mint(a) ^ (M - 2); }
+	mint inv(long long a) const { return mint(a) ^ (M - 2); }
 	mint inv() const { return this ^ (M - 2); }
 	friend mint operator+(const mint &a, long long b) { return a + mint(b); }
 	friend mint operator+(long long a, const mint &b) { return mint(a) + b; }
