@@ -1,3 +1,5 @@
+#define PROBLEM "https://judge.yosupo.jp/problem/convolution_mod"
+
 #include <bits/stdc++.h>
 
 #include <ext/pb_ds/assoc_container.hpp>
@@ -148,26 +150,27 @@ auto vectorize(T *a, int n, Sizes... sizes) {
 const int inf = 2e9;
 const ll infl = 4e18;
 const ll MOD = 998244353;
+const ll ROOT = 3;
 const ll MAXN = 2e5 + 5;
 
-#include "../../library/polynomial/poly.h"
+#include "../../library/polynomial/polymod.h"
 
 int solve() {
 	int n, m;
 	cin >> n >> m;
-	vector<double> a(n + 1);
+	vector<double> a(n);
 	for (auto &a_i: a) {
 		cin >> a_i;
 	}
-	vector<double> b(m + 1);
+	vector<double> b(m);
 	for (auto &b_i: b) {
 		cin >> b_i;
 	}
 	poly ap(a);
 	poly bp(b);
 	poly c = ap * bp;
-	for (int i = 0; i <= n + m; ++i) {
-		cout << (ll) (c[i].real()) << " ";
+	for (int i = 0; i <= n + m - 2; ++i) {
+		cout << c[i] << " ";
 	}
 
 

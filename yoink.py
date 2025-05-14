@@ -77,7 +77,7 @@ def process_struct(lines: list[str]) -> str:
     output_lines = []
 
     for line in lines:
-        if ('struct' in line and '{' in line) or ('template<' in line):
+        if (('struct' in line and '{' in line) or ('template<' in line)) and not in_struct:
             if 'template<' in line:
                 output_lines.append('// @formatter:off')
             in_struct = True

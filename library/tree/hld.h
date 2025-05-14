@@ -41,7 +41,7 @@ struct hld {
 			sz += childsz;
 		}
 		return sz;
-	};
+	}
 	void decompose(int v, int h) {
 		head[v] = h;
 		pos[v] = t++;
