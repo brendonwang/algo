@@ -71,15 +71,16 @@ struct poly {
 		}
 	}
 
-	friend poly operator*(poly &a, poly &b) {
+	friend poly operator*(poly a, poly b) {
 		int n = next_pow_2(a.size() + b.size() - 1);
-		poly aval(a.coef, n), bval(b.coef, n);
-		fft(aval);
-		fft(bval);
-		for (int i = 0; i < n; ++i) aval[i] *= bval[i];
-		fft(aval, true);
-		aval.coef.resize(a.size() + b.size() - 1);
-		for (auto &x: aval.coef) x = complex<long double>(round(x.real()), 0);
-		return aval;
+		a.coef.resize(n);
+		b.coef.resize(n);
+		fft(a, false);
+		fft(b, false);
+		for (int i = 0; i < n; ++i) a[i] *= b[i];
+		fft(a, true);
+		a.coef.resize(a.size() + b.size() - 1);
+		for (auto &x: a.coef) x = complex<long double>(round(x.real()), 0);
+		return a;
 	}
 };
