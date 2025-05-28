@@ -6,13 +6,16 @@ template<auto &M = MOD>
 struct binomial {
 	using T = mint<M>;
 	int MAXN;
-	static inline vector<T> fact{T(1)};
-	static inline vector<T> inv{T(1)};
+	static inline vector<T> fact;
+	static inline vector<T> inv;
 
 	binomial() = default;
 
 	explicit binomial(int maxN) : MAXN(maxN) {
-		// only extend if needed
+		if (fact.empty()) {
+			fact.push_back(T(1));
+			inv.push_back(T(1));
+		}
 		int prev = (int) fact.size() - 1;
 		int N = min(MAXN, M - 1);
 		if (N > prev) {
