@@ -18,7 +18,7 @@ struct poly {
 	}
 
 	template<typename T>
-	explicit poly(const std::vector<T> &real, int m = -1) {
+	explicit poly(const std::vector <T> &real, int m = -1) {
 		if (m == -1) m = (int) real.size();
 		int n = next_pow_2(m);
 		coef.resize(n);
@@ -95,14 +95,14 @@ struct poly {
 	}
 
 
-	static void fwt_or(poly& a, bool invert) {
-		int n = (int)a.size();
+	static void fwt_or(poly &a, bool invert) {
+		int n = (int) a.size();
 		assert((n & (n - 1)) == 0);
 		for (int len = 1; len < n; len <<= 1) {
 			for (int i = 0; i < n; i += len << 1) {
 				for (int j = 0; j < len; ++j) {
-					if (!invert)      a[i + j + len] += a[i + j];
-					else              a[i + j + len] -= a[i + j];
+					if (!invert) a[i + j + len] += a[i + j];
+					else a[i + j + len] -= a[i + j];
 					if (a[i + j + len] >= mod) a[i + j + len] -= mod;
 					if (a[i + j + len] < 0) a[i + j + len] += mod;
 				}
@@ -110,14 +110,14 @@ struct poly {
 		}
 	}
 
-	static void fwt_and(poly& a, bool invert) {
-		int n = (int)a.size();
+	static void fwt_and(poly &a, bool invert) {
+		int n = (int) a.size();
 		assert((n & (n - 1)) == 0);
 		for (int len = 1; len < n; len <<= 1) {
 			for (int i = 0; i < n; i += len << 1) {
 				for (int j = 0; j < len; ++j) {
-					if (!invert)      a[i + j] += a[i + j + len];
-					else              a[i + j] -= a[i + j + len];
+					if (!invert) a[i + j] += a[i + j + len];
+					else a[i + j] -= a[i + j + len];
 					if (a[i + j] >= mod) a[i + j] -= mod;
 					if (a[i + j] < 0) a[i + j] += mod;
 				}
@@ -125,8 +125,8 @@ struct poly {
 		}
 	}
 
-	static void fwt_xor(poly& a, bool invert) {
-		int n = (int)a.size();
+	static void fwt_xor(poly &a, bool invert) {
+		int n = (int) a.size();
 		assert((n & (n - 1)) == 0);
 		for (int len = 1; len < n; len <<= 1) {
 			for (int i = 0; i < n; i += len << 1) {
@@ -143,7 +143,7 @@ struct poly {
 		}
 		if (invert) {
 			int inv_n = pow_mod(n, mod - 2);
-			for (auto& x : a.coef)
+			for (auto &x: a.coef)
 				x = int(1LL * x * inv_n % mod);
 		}
 	}
@@ -153,7 +153,7 @@ struct poly {
 	static poly fwt_conv(const poly &x, const poly &y, F f, F invf) {
 		poly a = x;
 		poly b = y;
-		int need = std::max(a.size(), b.size());
+		int need = max(a.size(), b.size());
 		int n = next_pow_2(need);
 		a.coef.resize(n);
 		b.coef.resize(n);

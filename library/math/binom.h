@@ -6,22 +6,25 @@ template<auto &M = MOD>
 struct binomial {
 	using T = mint<M>;
 	int MAXN;
-	vector<T> fact;
-	vector<T> inv;
+	static inline vector<T> fact{T(1)};
+	static inline vector<T> inv{T(1)};
 
 	binomial() = default;
 
-	binomial(int maxN) : MAXN(maxN) {
-		fact.resize(MAXN + 1);
-		inv.resize(MAXN + 1);
-		int N = min(MAXN, (int) M) - 1;
-		fact[0] = 1;
-		for (int i = 1; i <= N; i++) {
-			fact[i] = fact[i - 1] * i;
-		}
-		inv[N] = fact[N].inv(fact[N]);
-		for (int i = N - 1; i >= 0; i--) {
-			inv[i] = inv[i + 1] * (i + 1);
+	explicit binomial(int maxN) : MAXN(maxN) {
+		// only extend if needed
+		int prev = (int) fact.size() - 1;
+		int N = min(MAXN, M - 1);
+		if (N > prev) {
+			fact.resize(N + 1);
+			inv.resize(N + 1);
+			for (int i = prev + 1; i <= N; ++i) {
+				fact[i] = fact[i - 1] * i;
+			}
+			inv[N] = modinv(fact[N]);
+			for (int i = N - 1; i > prev; --i) {
+				inv[i] = inv[i + 1] * (i + 1);
+			}
 		}
 	}
 

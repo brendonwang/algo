@@ -147,25 +147,16 @@ const ll MAXN = 1e7 + 5;
 
 #include "../../library/math/binom.h"
 
-int MOD_VAL;
-
-binomial<MOD_VAL> *binom;
-
-int solve() {
-	int n, k;
-	cin >> n >> k;
-	cout << binom->C(n, k) << '\n';
-	return 0;
-}
-
+int m;
 int main() {
 	ios::sync_with_stdio(false);
 	cin.tie(nullptr);
-	int T = 1, m;
+	int T = 1;
 	cin >> T >> m;
-	MOD_VAL = m;
-	binom = new binomial<MOD_VAL>(MAXN); // Update instantiation
+	binomial<m> binom(MAXN);
 	while (T--) {
-		solve();
+		int n, k;
+		cin >> n >> k;
+		cout << binom.C(n, k) << '\n';
 	}
 }
