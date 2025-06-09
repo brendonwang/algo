@@ -7,13 +7,13 @@ T max_flow(vector<vector<int>> &adj, vector<vector<T>> &capacity, int source, in
 	while (true) {
 		bool found = false;
 		vector<int> prev(n, -2);
-		queue<int> q;
+		queue<pii> q;
 
 		prev[source] = -1;
-		q.push(source);
+		q.push({source, inf});
 
 		while (!q.empty()) {
-			int v = q.front();
+			auto [v, cur_flow] = q.front();
 			q.pop();
 			if (v == sink) {
 				found = true;
@@ -22,17 +22,17 @@ T max_flow(vector<vector<int>> &adj, vector<vector<T>> &capacity, int source, in
 					if (p == -1) {
 						break;
 					}
-					capacity[p][v]--;
-					capacity[v][p]++;
+					capacity[p][v] -= cur_flow;
+					capacity[v][p] += cur_flow;
 					v = p;
 				}
-				flow++;
+				flow += cur_flow;
 				break;
 			}
 			for (int u: adj[v]) {
 				if (prev[u] == -2 && capacity[v][u]) {
 					prev[u] = v;
-					q.push(u);
+					q.push({u, min(cur_flow, capacity[v][u])});
 				}
 			}
 		}

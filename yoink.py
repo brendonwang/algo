@@ -66,35 +66,35 @@ def read_and_inline(filepath: str, visited_includes: set, workspace: str) -> lis
     return processed_lines
 
 
-def process_struct(lines: list[str]) -> str:
-    """
-    Processes struct definitions to make their contents one line each
-    while keeping braces separate, turning them into minimal no-format blocks
-    if template<> is found.
-    """
-    in_struct = False
-    struct_lines = []
-    output_lines = []
+# def process_struct(lines: list[str]) -> str:
+#     """
+#     Processes struct definitions to make their contents one line each
+#     while keeping braces separate, turning them into minimal no-format blocks
+#     if template<> is found.
+#     """
+    # in_struct = False
+    # struct_lines = []
+    # output_lines = []
 
-    for line in lines:
-        if (('struct' in line and '{' in line) or ('template<' in line)) and not in_struct:
-            if 'template<' in line:
-                output_lines.append('// @formatter:off')
-            in_struct = True
-            output_lines.append(line.strip())
-        elif in_struct and '};' in line:
-            in_struct = False
-            struct_content = ' '.join(struct_lines).strip()
-            output_lines.append(f"{struct_content}")
-            output_lines.append(line.strip())
-            output_lines.append('// @formatter:on')
-            struct_lines = []
-        elif in_struct:
-            struct_lines.append(line.strip())
-        else:
-            output_lines.append(line.strip())
+    # for line in lines:
+    #     if (('struct' in line and '{' in line) or ('template<' in line)) and not in_struct:
+    #         if 'template<' in line:
+    #             output_lines.append('// @formatter:off')
+    #         in_struct = True
+    #         output_lines.append(line.strip())
+    #     elif in_struct and '};' in line:
+    #         in_struct = False
+    #         struct_content = ' '.join(struct_lines).strip()
+    #         output_lines.append(f"{struct_content}")
+    #         output_lines.append(line.strip())
+    #         output_lines.append('// @formatter:on')
+    #         struct_lines = []
+    #     elif in_struct:
+    #         struct_lines.append(line.strip())
+    #     else:
+    #         output_lines.append(line.strip())
 
-    return '\n'.join(output_lines)
+    # return '\n'.join(lines)
 
 
 def main():
@@ -126,14 +126,14 @@ def main():
         # Read and inline includes
         lines = read_and_inline(filepath, visited_includes, args.workspace)
         # Process struct formatting
-        final_output = process_struct(lines)
+        # final_output = process_struct(lines)
     except Exception as e:
         print(f"Error processing file '{filepath}': {e}")
         sys.exit(1)
 
     # Copy to clipboard
     try:
-        pyperclip.copy(final_output)
+        pyperclip.copy('\n'.join(lines))
         print(
             "Done!")
     except Exception as e:
