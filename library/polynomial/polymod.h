@@ -421,28 +421,6 @@ struct poly {
 		return (pow_mod(coef[i], k) * ((k % mod) * ((*this >> i).log())).exp()) << min(min(k, size()) * i, size());
 	}
 
-	void pow_inplace(ll k) {
-		if (k == 0) {
-			coef[0] = 1;
-		}
-		int i = 0;
-		for (; i < size(); ++i) {
-			if (coef[i] != 0) {
-				break;
-			}
-		}
-		if (i == size()) {
-			coef.assign(size(), 0);
-			return;
-		}
-		int sz = size();
-		ll leading = pow_mod(coef[i], k);
-		*this >>= i;
-		this->log_inplace();
-		*this *= k % mod;
-		*this = leading * this->exp() << min(min(k, sz) * i, sz);
-	}
-
 	poly deriv() const {
 		if (size() == 1) {
 			return poly(vector<int>{0});

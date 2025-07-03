@@ -162,8 +162,7 @@ int solve() {
 		cin >> a_i;
 	}
 	poly ap(a);
-	ap.pow_inplace(m);
-//	ap = ap.pow(m);
+	ap = ap.pow(m);
 	for (int i = 0; i < n; ++i) {
 		cout << ap[i] << " ";
 	}

@@ -43,11 +43,9 @@ auto gen_vtree(vector<vector<pair<T, T>>> &adj, vector<vector<pair<T, T>>> &vadj
 			return bin_lift[a][0];
 		};
 		auto min_w = [&](int a, int b) {
-			if (depth[a] > depth[b]) {
-				swap(a, b);
-			}
+			if (depth[a] > depth[b]) swap(a, b);
 			int dist = depth[b] - depth[a];
-			int weight = inf;
+			int weight = INT_MAX;
 			for (int i = 0; i < maxk; ++i) {
 				if (dist & 1 << i) {
 					smin(weight, min_edge[b][i]);
