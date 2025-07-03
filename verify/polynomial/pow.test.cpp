@@ -163,6 +163,7 @@ int solve() {
 	}
 	poly ap(a);
 	ap.pow_inplace(m);
+//	ap = ap.pow(m);
 	for (int i = 0; i < n; ++i) {
 		cout << ap[i] << " ";
 	}

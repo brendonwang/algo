@@ -396,10 +396,10 @@ struct poly {
 		return poly(new_coef);
 	}
 	poly operator>>=(int k) {
-		return *this >> k;
+		return *this = *this >> k;
 	}
 	poly operator<<=(int k) {
-		return *this << k;
+		return *this = *this << k;
 	}
 
 	poly pow(ll k) const {
@@ -435,11 +435,12 @@ struct poly {
 			coef.assign(size(), 0);
 			return;
 		}
+		int sz = size();
 		ll leading = pow_mod(coef[i], k);
 		*this >>= i;
 		this->log_inplace();
 		*this *= k % mod;
-		*this = leading * this->exp() << min(min(k, size()) * i, size());
+		*this = leading * this->exp() << min(min(k, sz) * i, sz);
 	}
 
 	poly deriv() const {
