@@ -7,8 +7,8 @@ struct DSU {
 	int size(int x) { return -e[find(x)]; }
 	bool unite(int a, int b) {
 		a = find(a), b = find(b);
-		if (a == b) { return true; }
-		if (e[a] > e[b]) { swap(a, b); }
+		if (a == b) return true;
+		if (e[a] > e[b]) swap(a, b);
 		e[a] += e[b];
 		e[b] = a;
 		return false;

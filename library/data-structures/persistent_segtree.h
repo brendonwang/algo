@@ -30,8 +30,7 @@ struct segtree {
 
 	Node *update(Node *cur, int i, int v, int l, int r) {
 		if (l == r) {
-			cur->val = v;
-			return cur;
+			return new Node(cur->val + v, this);
 		}
 		int m = (l + r) / 2;
 		if (i <= m) {
@@ -42,6 +41,23 @@ struct segtree {
 	}
 
 	void update(int i, int v, int t = -1) {
+		if (t == -1) t = roots.size() - 1;
+		roots.push_back(update(roots[t], i, v, 0, n - 1));
+	}
+
+	Node *set(Node *cur, int i, int v, int l, int r) {
+		if (l == r) {
+			return new Node(cur->val + v, this);
+		}
+		int m = (l + r) / 2;
+		if (i <= m) {
+			return new Node(update(cur->l, i, v, l, m), cur->r, this);
+		} else {
+			return new Node(cur->l, update(cur->r, i, v, m + 1, r), this);
+		}
+	}
+
+	void set(int i, int v, int t = -1) {
 		if (t == -1) t = roots.size() - 1;
 		roots.push_back(update(roots[t], i, v, 0, n - 1));
 	}
