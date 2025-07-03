@@ -152,7 +152,7 @@ const ll infl = 4e18;
 const ll MOD = 998244353;
 const ll MAXN = 2e5 + 5;
 
-#include "../../library/graph/lca_binlift.h"
+#include "../../library/tree/lca_binlift.h"
 
 int solve() {
 	int n, q;
@@ -164,11 +164,11 @@ int solve() {
 		adj[p].push_back(i);
 		adj[i].push_back(p);
 	}
-	auto func = lca(adj, n);
+	auto lca = gen_lca(adj, n);
 	for (int i = 0; i < q; ++i) {
 		int u, v;
 		cin >> u >> v;
-		cout << func(u, v) << '\n';
+		cout << lca(u, v) << '\n';
 	}
 	return 0;
 }

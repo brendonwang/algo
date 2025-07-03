@@ -1,7 +1,7 @@
-auto lca(vector<vector<int>> &adj, int n) {
+auto gen_lca(vector <vector<int>> &adj, int n) {
 	vector<int> depth(n);
 	int maxk = 32 - __builtin_clz(n);
-	vector<vector<int>> bin_lift(n, vector<int>(maxk, -1));
+	vector <vector<int>> bin_lift(n, vector<int>(maxk, -1));
 	auto dfs = [&](int u, int p, auto &&self) -> void {
 		bin_lift[u][0] = p;
 		for (int k = 1; k < maxk; ++k) {
@@ -19,7 +19,7 @@ auto lca(vector<vector<int>> &adj, int n) {
 		}
 	};
 	dfs(0, -1, dfs);
-	auto lca = [depth, maxk, bin_lift](int a, int b) {
+	return [depth = move(depth), maxk, bin_lift = move(bin_lift)](int a, int b) {
 		if (depth[a] > depth[b]) swap(a, b);
 		int dist = depth[b] - depth[a];
 		for (int i = 0; i < maxk; ++i) if (dist & 1 << i) b = bin_lift[b][i];
@@ -29,5 +29,4 @@ auto lca(vector<vector<int>> &adj, int n) {
 				a = bin_lift[a][i], b = bin_lift[b][i];
 		return bin_lift[a][0];
 	};
-	return lca;
 }
