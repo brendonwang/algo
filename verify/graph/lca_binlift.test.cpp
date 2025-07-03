@@ -1,4 +1,4 @@
-#define PROBLEM "https://judge.yosupo.jp/problem/pow_of_formal_power_series"
+#define PROBLEM "https://judge.yosupo.jp/problem/lca"
 
 #include <bits/stdc++.h>
 
@@ -152,19 +152,23 @@ const ll infl = 4e18;
 const ll MOD = 998244353;
 const ll MAXN = 2e5 + 5;
 
-#include "../../library/polynomial/polymod.h"
+#include "../../library/graph/lca_binlift.h"
 
 int solve() {
-	ll n, m;
-	cin >> n >> m;
-	vector<ll> a(n);
-	for (auto &a_i: a) {
-		cin >> a_i;
+	int n, q;
+	cin >> n >> q;
+	vector<vector<int>> adj(n);
+	for (int i = 1; i < n; ++i) {
+		int p;
+		cin >> p;
+		adj[p].push_back(i);
+		adj[i].push_back(p);
 	}
-	poly ap(a);
-	ap.pow_inplace(m);
-	for (int i = 0; i < n; ++i) {
-		cout << ap[i] << " ";
+	auto func = lca(adj, n);
+	for (int i = 0; i < q; ++i) {
+		int u, v;
+		cin >> u >> v;
+		cout << func(u, v) << '\n';
 	}
 	return 0;
 }

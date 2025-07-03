@@ -233,6 +233,9 @@ struct poly {
 	friend poly operator-(ll k, poly rhs) {
 		return rhs * -1 + k;
 	}
+	friend poly operator+(ll k, poly rhs) {
+		return rhs + k;
+	}
 	poly inv() const {
 		poly cur_a(vector<ll>{coef[0]});
 
@@ -432,10 +435,11 @@ struct poly {
 			coef.assign(size(), 0);
 			return;
 		}
+		ll leading = pow_mod(coef[i], k);
 		*this >>= i;
 		this->log_inplace();
 		*this *= k % mod;
-		*this = (this->exp() * pow_mod(coef[i], k)) << min(min(k, size()) * i, size());
+		*this = leading * this->exp() << min(min(k, size()) * i, size());
 	}
 
 	poly deriv() const {
