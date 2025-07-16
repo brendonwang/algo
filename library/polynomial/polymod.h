@@ -282,7 +282,7 @@ struct poly {
 		return b;
 	}
 
-	static inline bool euler_rule(int x) {
+	static inline bool legendre(int x) {
 		return x == 0 || pow_mod(x, (mod - 1) / 2) == 1;
 	}
 
@@ -292,7 +292,7 @@ struct poly {
 		while (true) {
 			a = uniform_int_distribution<ll>(0, mod)(engine);
 			i2 = ((a * a - n) % mod + mod) % mod;
-			if (!euler_rule(i2)) {
+			if (!legendre(i2)) {
 				break;
 			}
 		}
@@ -324,7 +324,7 @@ struct poly {
 			throw domain_error("poly::sqrt: leading coefficient is not a quadratic residue");
 		}
 		auto cur_coef = vector<ll>(coef.begin() + i, coef.end());
-		if (!euler_rule(cur_coef[0])) {
+		if (!legendre(cur_coef[0])) {
 			throw domain_error("poly::sqrt: leading coefficient is not a quadratic residue");
 		}
 		poly b(vector<ll>{mod_sqrt(cur_coef[0])});
@@ -361,7 +361,7 @@ struct poly {
 			throw domain_error("poly::sqrt: leading coefficient is not a quadratic residue");
 		}
 		auto cur_coef = vector<ll>(coef.begin() + i, coef.end());
-		if (!euler_rule(cur_coef[0])) {
+		if (!legendre(cur_coef[0])) {
 			throw domain_error("poly::sqrt: leading coefficient is not a quadratic residue");
 		}
 		poly b(vector<ll>{mod_sqrt(cur_coef[0])});

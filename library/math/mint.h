@@ -68,6 +68,7 @@ struct mint {
 		return r;
 	}
 	mint modinv(int a) const { return mint(a) ^ (M - 2); }
+	mint modinv(mint a) const { return a ^ (M - 2); }
 	friend mint modinv(mint a) { return a ^ (M - 2); }
 	friend mint operator+(const mint &a, long long b) { return a + mint(b); }
 	friend mint operator+(long long a, const mint &b) { return mint(a) + b; }
@@ -108,4 +109,40 @@ struct mint {
 	bool operator<=(const mint &y) const { return v <= y.v; }
 	bool operator<=(int32_t y) const { return v <= y; }
 	bool operator<=(long long y) const { return v <= y; }
+
+	bool legendre() {
+		return v == 0 || Pow((M - 1) / 2) == 1;
+	}
+
+	optional<mint> mod_sqrt() {
+		if (v == 0) return 0;
+		if (!legendre()) return nullopt;
+		if (M == 2) return v;
+		mint a, i2;
+		static mt19937 engine(chrono::steady_clock::now().time_since_epoch().count());
+		while (true) {
+			a = uniform_int_distribution<ll>(0, M - 1)(engine);
+			i2 = a * a - v;
+			if (!i2.legendre()) {
+				break;
+			}
+		}
+
+		if (i2.legendre()) {
+			throw;
+		}
+		int pow = (M + 1) / 2;
+		pair<mint, mint> ans = {1, 0};
+		pair<mint, mint> base = {a, 1};
+		while (pow > 0) {
+			if (pow & 1)
+				ans = {(ans.first * base.first + i2 * (ans.second * base.second)),
+				       (ans.first * base.second + ans.second * base.first)};
+			base = {(base.first * base.first + i2 * (base.second * base.second)),
+			        2 * base.first * base.second};
+			pow >>= 1;
+		}
+		return ans.first;
+	}
+
 };

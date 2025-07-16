@@ -1,4 +1,4 @@
-#define PROBLEM "https://judge.yosupo.jp/problem/range_kth_smallest"
+#define PROBLEM "https://onlinejudge.u-aizu.ac.jp/courses/library/3/DSL/2/DSL_2_G"
 
 #include <bits/stdc++.h>
 
@@ -67,6 +67,8 @@ T power(T x, T y) {
 	return res;
 }
 
+
+
 /* MACROS */
 #define clearall(arr) memset(arr, 0, sizeof arr)
 #define clearn(arr, n) memset(arr, 0, n * sizeof arr[0])
@@ -84,62 +86,37 @@ T power(T x, T y) {
 /* CONSTANTS */
 const int inf = 2e9;
 const ll infl = 4e18;
-const ll MOD = 1e9 + 7;
+const ll MOD = 998244353;
 const ll MAXN = 2e5 + 5;
 
-#include "../../library/data-structures/persistent_segtree.h"
-
-template<class T>
-struct rangekth : public segtree<T> {
-	using Node = typename segtree<T>::Node;
-	rangekth(int n, T unit, function<T(T, T)> f)
-			: segtree<T>(n, unit, f) {
-	}
-	int queryk(Node *left, Node *right, int k, int xl, int xr) {
-		if (xl == xr) {
-			return xl;
-		}
-		int m = xl + (xr - xl) / 2;
-		if (right->l != nullptr && right->l->val - left->l->val >= k) {
-			return queryk(left->l, right->l, k, xl, m);
-		} else {
-			return queryk(left->r, right->r, k - right->l->val + left->l->val, m + 1, xr);
-		}
-	}
-	int queryk(int l, int r, int k) {
-		return queryk(this->roots[l], this->roots[r], k, 0, this->n - 1);
-	}
-};
+#include "../../library/data-structures/splay_tree.h"
 
 int solve() {
 	int n, q;
 	cin >> n >> q;
-	vector<int> a(n);
-	for (auto &a_i: a) {
-		cin >> a_i;
-	}
-	vector<int> a_vals = a;
-	std::sort(a_vals.begin(), a_vals.end());
-	map<int, int> vals;
-	map<int, int> rev;
+	splay_tree<ll, (int) 5e5 + 5> st(0, [](auto a, auto b) { return a + b; },
+	                                 [](auto &a, auto b, int sz) {
+		                                 a += b * sz;
+	                                 });
 	for (int i = 0; i < n; ++i) {
-		if (vals.count(a_vals[i]) == 0) {
-			rev[vals.size()] = a_vals[i];
-			vals[a_vals[i]] = vals.size();
+		st.insert(n + 1, 0);
+	}
+	while (q--) {
+		int type;
+		cin >> type;
+		if (type == 0) {
+			int l, r, x;
+			cin >> l >> r >> x;
+			l--, r--;
+			st.update(l, r, x);
+		} else {
+			int l, r;
+			cin >> l >> r;
+			l--, r--;
+			cout << st.query(l, r) << '\n';
 		}
 	}
-	for (int i = 0; i < n; ++i) {
-		a[i] = vals[a[i]];
-	}
-	rangekth<int> st(vals.size(), 0, [](int a, int b) { return a + b; });
-	for (int i = 0; i < n; ++i) {
-		st.update(a[i], 1);
-	}
-	for (int i = 0; i < q; ++i) {
-		int l, r, k;
-		cin >> l >> r >> k;
-		cout << rev[st.queryk(l, r, k + 1)] << '\n';
-	}
+
 	return 0;
 }
 

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../number-theory/mint.h"
+#include "mint.h"
 
 template<auto &M = MOD>
 struct binomial {
