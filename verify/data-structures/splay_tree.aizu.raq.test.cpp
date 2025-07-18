@@ -108,7 +108,7 @@ int solve() {
 			int l, r, x;
 			cin >> l >> r >> x;
 			l--, r--;
-			st.set(l, r, x);
+			st.update(l, r, x);
 		} else {
 			int i;
 			cin >> i;

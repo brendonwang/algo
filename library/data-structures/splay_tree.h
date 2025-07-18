@@ -9,7 +9,7 @@ struct splay_tree {
 		Node() = default;
 		template<typename Splay>
 		inline void propagate(Splay *st) {
-			if (st->add && lazy != st->lazy_unit) {
+			if (lazy != st->lazy_unit) {
 				st->add(val, lazy, 1);
 				st->add(subtree, lazy, sz);
 				if (l) st->lazy_add(l->lazy, lazy);
