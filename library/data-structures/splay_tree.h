@@ -7,39 +7,38 @@ struct splay_tree {
 		lazy_tag lazy;
 		bool rev = false;
 		Node() = default;
-		template<typename Splay>
-		inline void propagate(Splay *st) {
-			if (lazy != st->lazy_unit) {
-				st->add(val, lazy, 1);
-				st->add(subtree, lazy, sz);
-				if (l) st->lazy_add(l->lazy, lazy);
-				if (r) st->lazy_add(r->lazy, lazy);
-				lazy = st->lazy_unit;
-			}
-			if (rev) {
-				swap(l, r);
-				if (l) l->rev = !l->rev;
-				if (r) r->rev = !r->rev;
-				rev = false;
-			}
-		}
-
-		template<typename Splay>
-		inline void update(Splay *st) {
-			sz = 1;
-			subtree = val;
-			if (l) {
-				l->propagate(st);
-				sz += l->sz;
-				subtree = st->f(subtree, l->subtree);
-			}
-			if (r) {
-				r->propagate(st);
-				sz += r->sz;
-				subtree = st->f(subtree, r->subtree);
-			}
-		}
 	};
+
+	inline void propagate(Node *x) {
+		if (x->lazy != lazy_unit) {
+			add(x->val, x->lazy, 1);
+			add(x->subtree, x->lazy, x->sz);
+			if (x->l) lazy_add(x->l->lazy, x->lazy);
+			if (x->r) lazy_add(x->r->lazy, x->lazy);
+			x->lazy = lazy_unit;
+		}
+		if (x->rev) {
+			swap(x->l, x->r);
+			if (x->l) x->l->rev = !x->l->rev;
+			if (x->r) x->r->rev = !x->r->rev;
+			x->rev = false;
+		}
+	}
+
+	inline void update(Node *x) {
+		x->sz = 1;
+		x->subtree = x->val;
+		if (x->l) {
+			propagate(x->l);
+			x->sz += x->l->sz;
+			x->subtree = f(x->subtree, x->l->subtree);
+		}
+		if (x->r) {
+			propagate(x->r);
+			x->sz += x->r->sz;
+			x->subtree = f(x->subtree, x->r->subtree);
+		}
+	}
 
 	static inline Node buff[MAXN];
 	static inline int cnt = 0;
@@ -103,8 +102,8 @@ struct splay_tree {
 		}
 		y->l = x;
 		x->p = y;
-		x->update(this);
-		y->update(this);
+		update(x);
+		update(y);
 	}
 
 	void rotateRight(Node *x) {
@@ -123,13 +122,13 @@ struct splay_tree {
 		}
 		y->r = x;
 		x->p = y;
-		x->update(this);
-		y->update(this);
+		update(x);
+		update(y);
 	}
 
 	void splay(Node *x) {
 		while (x->p) {
-			x->p->propagate(this);
+			propagate(x->p);
 			if (x->p->p == nullptr) {
 				// zig
 				if (x->p->l == x) {
@@ -138,7 +137,7 @@ struct splay_tree {
 					rotateLeft(x->p);
 				}
 			} else {
-				x->p->p->propagate(this);
+				propagate(x->p->p);
 				if (x->p->l == x && x->p->p->l == x->p) {
 					// zigzig
 					rotateRight(x->p->p);
@@ -161,7 +160,7 @@ struct splay_tree {
 	Node *find(int idx) {
 		Node *x = root;
 		while (x) {
-			x->propagate(this);
+			propagate(x);
 			if (idx == size(x->l)) {
 				break;
 			} else if (size(x->l) < idx) {
@@ -198,7 +197,7 @@ struct splay_tree {
 				r->p = nullptr;
 			}
 			root->r = nullptr;
-			root->update(this);
+			update(root);
 			return {splay_tree(unit, f, add, lazy_unit, lazy_add, root),
 			        splay_tree(unit, f, add, lazy_unit, lazy_add, r)};
 		} else {
@@ -207,14 +206,14 @@ struct splay_tree {
 					Node *r = root->r;
 					if (r) r->p = nullptr;
 					root->r = nullptr;
-					root->update(this);
+					update(root);
 					return {splay_tree(unit, f, add, lazy_unit, lazy_add, root),
 					        splay_tree(unit, f, add, lazy_unit, lazy_add, r)};
 				} else {
 					Node *l = root->l;
 					if (l) l->p = nullptr;
 					root->l = nullptr;
-					root->update(this);
+					update(root);
 					return {splay_tree(unit, f, add, lazy_unit, lazy_add, l),
 					        splay_tree(unit, f, add, lazy_unit, lazy_add, root)};
 				}
@@ -224,18 +223,18 @@ struct splay_tree {
 			}
 		}
 	}
-	static splay_tree merge(splay_tree left, splay_tree right) {
+	splay_tree merge(splay_tree left, splay_tree right) {
 		if (!left.root) return right;
 		if (!right.root) return left;
 		Node *x = left.root;
-		x->propagate(&left);
+		propagate(x);
 		while (x->r) {
 			x = x->r;
-			x->propagate(&left);
+			propagate(x);
 		}
 		left.splay(x);
 		left.root->r = right.root;
-		left.root->update(&left);
+		update(left.root);
 		right.root->p = left.root;
 		return left;
 	}
@@ -276,7 +275,7 @@ struct splay_tree {
 		// apply operation on to mid
 		if (mid.root) {
 			mid.root->lazy = apply(mid.root->lazy, val);
-			mid.root->propagate(&mid);
+			propagate(mid.root);
 		}
 		*this = merge(merge(left, mid), rest);
 	}
@@ -306,7 +305,7 @@ struct splay_tree {
 		// apply operation on to mid
 		if (mid.root) {
 			mid.root->rev = true;
-			mid.root->propagate(&mid);
+			propagate(mid.root);
 		}
 		*this = merge(merge(left, mid), rest);
 	}
