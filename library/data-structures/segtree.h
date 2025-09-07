@@ -1,14 +1,18 @@
 #pragma once
 
-template<class T>
+template<typename T, typename F>
 struct segtree {
-	vector<T> seg;
 	int n;
+	vector<T> seg;
 	T unit;
-	function<T(T, T)> f;
-	segtree(int n, T unit, function<T(T, T)> f) : n(n), unit(unit), f(f) { seg.assign(2 * n, unit); }
-	segtree(int n, vector<T> &a, T unit, function<T(T, T)> f) : n(n), unit(unit), f(f), seg(2 * n, unit) { build(a); }
-	segtree(vector<T> &a, T unit, function<T(T, T)> f) : n(a.size()), unit(unit), f(f), seg(2 * n, unit) { build(a); }
+	F f;
+	segtree(int n, T unit, F &&f) : n(n), unit(unit), f(forward<F>(f)), seg(2 * n, unit) {}
+	segtree(int n, vector<T> &a, T unit, F &&f) : n(n), unit(unit), f(forward<F>(f)), seg(2 * n, unit) {
+		build(a);
+	}
+	segtree(vector<T> &a, T unit, F &&f) : n(a.size()), unit(unit), f(forward<F>(f)), seg(2 * n, unit) {
+		build(a);
+	}
 	void build(vector<T> &a) {
 		for (int i = 0; i < n; ++i) { seg[i + n] = a[i]; }
 		for (int i = n - 1; i > 0; --i) { seg[i] = f(seg[i << 1], seg[i << 1 | 1]); }
