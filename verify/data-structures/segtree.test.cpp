@@ -94,12 +94,11 @@ const ll MAXN = 2e5 + 5;
 int solve() {
 	int n, q;
 	cin >> n >> q;
-	segtree<ll> st(n, 0, [](auto a, auto b) { return a + b; });
 	vector<ll> v(n);
 	for (auto &v_i: v) {
 		cin >> v_i;
 	}
-	st.build(v);
+	segtree<ll> st(v, 0, [](auto a, auto b) { return a + b; });
 	while (q--) {
 		int type, a, b;
 		cin >> type >> a >> b;

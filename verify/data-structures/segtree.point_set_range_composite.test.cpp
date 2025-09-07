@@ -38,7 +38,7 @@ int solve() {
 		cin >> a >> b;
 		lines[i] = {a, b};
 	}
-	segtree st(lines, {1, 0}, [&](const line &y, const line &x) -> line { return {x.a * y.a, x.a * y.b + x.b}; });
+	segtree<line> st(lines, {1, 0}, [&](const line &y, const line &x) -> line { return {x.a * y.a, x.a * y.b + x.b}; });
 	for (int i = 0; i < q; ++i) {
 		int t;
 		cin >> t;
