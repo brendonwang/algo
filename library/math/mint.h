@@ -2,20 +2,20 @@
 
 template<auto &M = MOD>
 struct mint {
-	int v;
+	ll v;
 	mint() : v(0) {}
-	mint(int x) { v = x >= 0 ? x % M : x + (-x + M - 1) / M * M; }
+	mint(ll x) { v = x >= 0 ? x % M : x + (-x + M - 1) / M * M; }
 	friend ostream &operator<<(ostream &stream, const mint &x) {
 		stream << x.v;
 		return stream;
 	}
 	friend istream &operator>>(istream &stream, mint &val) {
-		int x;
+		ll x;
 		stream >> x;
 		val.v = x >= 0 ? x % M : x + (-x + M - 1) / M * M;
 		return stream;
 	}
-	explicit operator int() const { return v; }
+	explicit operator ll() const { return v; }
 	mint &operator++() {
 		if (++v >= M)v -= M;
 		return *this;
@@ -62,12 +62,12 @@ struct mint {
 		*this = this->Pow(y);
 		return *this;
 	}
-	mint Pow(int y) const {
+	mint Pow(ll y) const {
 		mint r = 1, x = v;
 		for (y <<= 1; y >>= 1; x = x * x)if (y & 1)r = r * x;
 		return r;
 	}
-	mint modinv(int a) const { return mint(a) ^ (M - 2); }
+	mint modinv(ll a) const { return mint(a) ^ (M - 2); }
 	mint modinv(mint a) const { return a ^ (M - 2); }
 	friend mint modinv(mint a) { return a ^ (M - 2); }
 	friend mint operator+(const mint &a, long long b) { return a + mint(b); }
@@ -131,7 +131,7 @@ struct mint {
 		if (i2.legendre()) {
 			throw;
 		}
-		int pow = (M + 1) / 2;
+		ll pow = (M + 1) / 2;
 		pair<mint, mint> ans = {1, 0};
 		pair<mint, mint> base = {a, 1};
 		while (pow > 0) {
