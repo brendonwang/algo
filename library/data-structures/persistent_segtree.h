@@ -59,7 +59,7 @@ struct segtree {
 
 	void set(int i, int v, int t = -1) {
 		if (t == -1) t = roots.size() - 1;
-		roots.push_back(update(roots[t], i, v, 0, n - 1));
+		roots.push_back(set(roots[t], i, v, 0, n - 1));
 	}
 
 	T query(Node *cur, int a, int b, int l, int r) {
