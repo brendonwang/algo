@@ -47,13 +47,13 @@ struct segtree {
 
 	Node *set(Node *cur, int i, int v, int l, int r) {
 		if (l == r) {
-			return new Node(cur->val + v, this);
+			return new Node(cur->val = v, this);
 		}
 		int m = (l + r) / 2;
 		if (i <= m) {
-			return new Node(update(cur->l, i, v, l, m), cur->r, this);
+			return new Node(set(cur->l, i, v, l, m), cur->r, this);
 		} else {
-			return new Node(cur->l, update(cur->r, i, v, m + 1, r), this);
+			return new Node(cur->l, set(cur->r, i, v, m + 1, r), this);
 		}
 	}
 

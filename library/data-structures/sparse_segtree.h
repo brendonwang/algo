@@ -8,13 +8,13 @@ struct segtree {
 		Node(const T &v) : l(nullptr), r(nullptr), v(v) {}
 	};
 
-	Node *left(Node *x) {
+	inline Node *left(Node *x) {
 		if (!x->l) {
 			x->l = new Node(unit);
 		}
 		return x->l;
 	}
-	Node *right(Node *x) {
+	inline Node *right(Node *x) {
 		if (!x->r) {
 			x->r = new Node(unit);
 		}
