@@ -8,7 +8,7 @@ using pii = pair<int, int>;
 #define sfunc(a, b, c) ((a) = c((a), (b)))
 #define smin(a, b) sfunc((a), (b), min)
 #define smax(a, b) sfunc((a), (b), max)
-#define sz(a) (int)(a).size()
+#define SZ(a) (int)(a).size()
 #define readall(arr, n) for (int i = 0; i < n; i++) cin >> (arr)[i]
 #define printall(arr, n) for (int i = 0; i < n; i++) cout << (arr)[i] <<
 
