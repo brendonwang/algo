@@ -6,10 +6,10 @@ struct segtree {
 	vector<T> seg;
 	T unit;
 	function<T(T, T)> f;
-	segtree(int n, T unit, function<T(T, T)> f) : n(n), unit(unit), f(f), seg(2 * n, unit) {}
-	segtree(int n, vector<T> &a, T unit, function<T(T, T)> f) : n(n), unit(unit), f(f), seg(2 * n, unit) { build(a); }
-	segtree(vector<T> &a, T unit, function<T(T, T)> f) : n(a.size()), unit(unit), f(f), seg(2 * n, unit) { build(a); }
-	void build(vector<T> &a) {
+	segtree(int n, T unit, const function<T(T, T)> &f) : n(n), unit(unit), f(f), seg(2 * n, unit) {}
+	segtree(int n, const vector<T> &a, T unit, const function<T(T, T)> &f) : n(n), unit(unit), f(f), seg(2 * n, unit) { build(a); }
+	segtree(const vector<T> &a, T unit, const function<T(T, T)> &f) : n(a.size()), unit(unit), f(f), seg(2 * n, unit) { build(a); }
+	void build(const vector<T> &a) {
 		for (int i = 0; i < n; ++i) { seg[i + n] = a[i]; }
 		for (int i = n - 1; i > 0; --i) { seg[i] = f(seg[i << 1], seg[i << 1 | 1]); }
 	}
