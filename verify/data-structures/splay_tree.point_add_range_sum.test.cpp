@@ -94,7 +94,7 @@ const ll MAXN = 2e5 + 5;
 int solve() {
 	int n, q;
 	cin >> n >> q;
-	splay_tree<ll, (int) 5e5 + 5> st(0, [](auto a, auto b) { return a + b; });
+	splay_tree st(0ll, [](auto a, auto b) { return a + b; });
 	vector<ll> v(n);
 	for (auto &v_i: v) {
 		cin >> v_i;
