@@ -10,7 +10,7 @@ using pii = pair<int, int>;
 #define smax(a, b) sfunc((a), (b), max)
 #define SZ(a) (int)(a).size()
 #define readall(arr, n) for (int i = 0; i < n; i++) cin >> (arr)[i]
-#define printall(arr, n) for (int i = 0; i < n; i++) cout << (arr)[i] <<
+#define printall(arr, n) for (int i = 0; i < n; i++) cout << (arr)[i]
 
 const int inf = 2e9;
 const ll infl = 4e18;
@@ -24,7 +24,7 @@ int solve() {
 int main() {
 	cin.tie(0)->sync_with_stdio(0);
 	int T = 1;
-//	cin >> T;
+	//	cin >> T;
 	while (T--) {
 		solve();
 	}
