@@ -14,8 +14,8 @@ using pii = pair<int, int>;
 
 const int inf = 2e9;
 const ll infl = 4e18;
-const ll MOD = 998244353;
-const ll MAXN = 2e5 + 5;
+const int MOD = 998244353;
+const int MAXN = 2e5 + 5;
 
 int solve() {
 	return 0;
