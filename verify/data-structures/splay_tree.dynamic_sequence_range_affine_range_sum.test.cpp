@@ -94,17 +94,21 @@ const ll MAXN = 2e5 + 5;
 
 struct affine {
 	mint<> x, y;
+
 	affine operator+=(affine rhs) {
 		x += rhs.x;
 		y += rhs.y;
 		return *this;
 	}
+
 	friend affine operator+(affine lhs, affine rhs) {
 		return lhs += rhs;
 	}
+
 	bool operator==(const affine &rhs) const {
 		return x == rhs.x && y == rhs.y;
 	}
+
 	bool operator!=(const affine &rhs) const {
 		return !(rhs == *this);
 	}
@@ -114,10 +118,10 @@ struct affine {
 int solve() {
 	int n, q;
 	cin >> n >> q;
-	splay_tree<mint<>, (int) 1e6 + 5, affine> st(0, [](auto a, auto b) { return a + b; },
-	                                             [](auto &a, auto b, int sz) {
-		                                             a = (a * b.x + b.y * sz);
-	                                             }, affine{1, 0}, [](auto &a, auto b) {
+	splay_tree st(mint<>(0), [](auto a, auto b) { return a + b; },
+	              [](auto &a, auto b, int sz) {
+		              a = (a * b.x + b.y * sz);
+	              }, affine{1, 0}, [](auto &a, auto b) {
 				a.x *= b.x;
 				a.y = a.y * b.x + b.y;
 			});
@@ -132,7 +136,7 @@ int solve() {
 		if (type == 0) {
 			int i, x;
 			cin >> i >> x;
-			st.insert(i - 1, x);
+			st.insert(i, x);
 		} else if (type == 1) {
 			int i;
 			cin >> i;

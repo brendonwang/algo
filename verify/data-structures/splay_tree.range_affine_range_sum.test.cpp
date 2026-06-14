@@ -114,7 +114,7 @@ struct affine {
 int solve() {
 	int n, q;
 	cin >> n >> q;
-	splay_tree<mint<>, (int) 5e5 + 5, affine> st(0, [](auto a, auto b) { return a + b; },
+	splay_tree st(mint<>(0), [](auto a, auto b) { return a + b; },
 	                                             [](auto &a, auto b, int sz) {
 		                                             a = (a * b.x + b.y * sz);
 	                                             }, affine{1, 0}, [](auto &a, auto b) {
