@@ -13,18 +13,18 @@ using namespace __gnu_pbds;
 /* HASH */
 
 struct custom_hash {
-	static uint64_t splitmix64(uint64_t x) {
-		// http://xorshift.di.unimi.it/splitmix64.c
-		x += 0x9e3779b97f4a7c15;
-		x = (x ^ (x >> 30)) * 0xbf58476d1ce4e5b9;
-		x = (x ^ (x >> 27)) * 0x94d049bb133111eb;
-		return x ^ (x >> 31);
-	}
+  static uint64_t splitmix64(uint64_t x) {
+    // http://xorshift.di.unimi.it/splitmix64.c
+    x += 0x9e3779b97f4a7c15;
+    x = (x ^ (x >> 30)) * 0xbf58476d1ce4e5b9;
+    x = (x ^ (x >> 27)) * 0x94d049bb133111eb;
+    return x ^ (x >> 31);
+  }
 
-	size_t operator()(uint64_t x) const {
-		static const uint64_t FIXED_RANDOM = chrono::steady_clock::now().time_since_epoch().count();
-		return splitmix64(x + FIXED_RANDOM);
-	}
+  size_t operator()(uint64_t x) const {
+    static const uint64_t FIXED_RANDOM = chrono::steady_clock::now().time_since_epoch().count();
+    return splitmix64(x + FIXED_RANDOM);
+  }
 };
 
 template<class K, class V> using safe_map = unordered_map<K, V, custom_hash>;
@@ -50,24 +50,22 @@ using vll = V<ll>;
 
 template<class T, class U>
 T max(T a, U b) {
-	return (a > b) ? a : b;
+  return (a > b) ? a : b;
 }
 
 template<class T, class U>
 T min(T a, U b) {
-	return (a < b) ? a : b;
+  return (a < b) ? a : b;
 }
 
 template<class T>
 T power(T x, T y) {
-	T res = 1;
-	for (T i = 0; i < y; i++) {
-		res *= x;
-	}
-	return res;
+  T res = 1;
+  for (T i = 0; i < y; i++) {
+    res *= x;
+  }
+  return res;
 }
-
-
 
 /* MACROS */
 #define clearall(arr) memset(arr, 0, sizeof arr)
@@ -79,9 +77,11 @@ T power(T x, T y) {
 #define smin(a, b) sfunc((a), (b), min)
 #define smax(a, b) sfunc((a), (b), max)
 #define ALL(x) begin(x), end(x)
-#define SZ(a) (int)(a).size()
-#define readall(arr, n) for (int i = 0; i < n; i++) cin >> arr[i]
-#define printall(arr, n) for (int i = 0; i < n; i++) cout << arr[i] << " "
+#define SZ(a) (int) (a).size()
+#define readall(arr, n)                                                                                                \
+  for (int i = 0; i < n; i++) cin >> arr[i]
+#define printall(arr, n)                                                                                               \
+  for (int i = 0; i < n; i++) cout << arr[i] << " "
 
 /* CONSTANTS */
 const int inf = 2e9;
@@ -92,40 +92,39 @@ const ll MAXN = 2e5 + 5;
 #include "../../library/data-structures/splay_tree.h"
 
 int solve() {
-	int n, q;
-	cin >> n >> q;
-	splay_tree<ll, (int) 5e5 + 5> st(0, [](auto a, auto b) { return a + b; },
-	                                 [](auto &a, auto b, int sz) {
-		                                 a += b * sz;
-	                                 });
-	for (int i = 0; i < n; ++i) {
-		st.insert(n + 1, 0);
-	}
-	while (q--) {
-		int type;
-		cin >> type;
-		if (type == 0) {
-			int l, r, x;
-			cin >> l >> r >> x;
-			l--, r--;
-			st.update(l, r, x);
-		} else {
-			int i;
-			cin >> i;
-			i--;
-			cout << st.query(i, i) << '\n';
-		}
-	}
+  int n, q;
+  cin >> n >> q;
+  splay_tree st(
+      0ll, [](ll a, ll b) { return a + b; }, [](ll& a, ll b, int sz) { a += b * sz; }, 0ll,
+      [](ll& a, ll b) { a += b; });
+  for (int i = 0; i < n; ++i) {
+    st.insert(i, 0);
+  }
+  while (q--) {
+    int type;
+    cin >> type;
+    if (type == 0) {
+      int l, r, x;
+      cin >> l >> r >> x;
+      l--, r--;
+      st.apply(l, r, x);
+    } else {
+      int i;
+      cin >> i;
+      i--;
+      cout << st.query(i, i) << '\n';
+    }
+  }
 
-	return 0;
+  return 0;
 }
 
 int main() {
-	ios::sync_with_stdio(false);
-	cin.tie(nullptr);
-	int T = 1;
-//	cin >> T;
-	while (T--) {
-		solve();
-	}
+  ios::sync_with_stdio(false);
+  cin.tie(nullptr);
+  int T = 1;
+  //	cin >> T;
+  while (T--) {
+    solve();
+  }
 }

@@ -94,7 +94,10 @@ const ll MAXN = 2e5 + 5;
 int solve() {
 	int n, q;
 	cin >> n >> q;
-	splay_tree st(0ll, [](auto a, auto b) { return a + b; });
+	splay_tree st(0ll, [](auto a, auto b) { return a + b; },
+	              [](auto &a, auto b, int sz) {
+	              	  a += b * sz;
+	              }, 0ll, [](auto &, auto &) {});
 	vector<ll> v(n);
 	for (auto &v_i: v) {
 		cin >> v_i;
@@ -104,7 +107,7 @@ int solve() {
 		int type, a, b;
 		cin >> type >> a >> b;
 		if (type == 0) {
-			st.update(a, b);
+			st.change(a, b, [](auto &x, auto y) { x += y; });
 		} else {
 			cout << st.query(a, b - 1) << '\n';
 		}

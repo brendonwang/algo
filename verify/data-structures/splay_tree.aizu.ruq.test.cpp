@@ -94,10 +94,10 @@ const ll MAXN = 2e5 + 5;
 int solve() {
 	int n, q;
 	cin >> n >> q;
-	splay_tree<ll, (int) 5e5 + 5> st(0, [](auto a, auto b) { return a + b; },
-	                                 [](auto &a, auto b, int sz) {
-		                                 a = b * sz;
-	                                 }, -1, [](auto &a, auto b) { a = b; });
+	splay_tree st(0ll, [](auto a, auto b) { return a + b; },
+	              [](auto &a, auto b, int sz) {
+		              a = b * sz;
+	              }, -1ll, [](auto &a, auto b) { a = b; });
 	for (int i = 0; i < n; ++i) {
 		st.insert(n + 1, (1ll << 31) - 1);
 	}
@@ -107,7 +107,7 @@ int solve() {
 		if (type == 0) {
 			int l, r, x;
 			cin >> l >> r >> x;
-			st.set(l, r, x);
+			st.apply(l, r, x);
 		} else {
 			int i;
 			cin >> i;
