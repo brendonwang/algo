@@ -49,7 +49,7 @@ int solve() {
 		} else {
 			int l, r, x;
 			cin >> l >> r >> x;
-			cout << st.query(l, r)(x) << '\n';
+			cout << st.query(l, r-1)(x) << '\n';
 		}
 	}
 	return 0;

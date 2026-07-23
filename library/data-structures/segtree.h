@@ -17,7 +17,7 @@ struct segtree {
 	void set(int i, T val) { for (seg[i += n] = val; i >>= 1;) { seg[i] = f(seg[i << 1], seg[i << 1 | 1]); }}
 	T query(int l, int r) {
 		T ra = unit, rb = unit;
-		for (l += n, r += n; l < r; l >>= 1, r >>= 1) {
+		for (l += n, r += n + 1; l < r; l >>= 1, r >>= 1) {
 			if (l & 1) { ra = f(ra, seg[l++]); }
 			if (r & 1) { rb = f(seg[--r], rb); }
 		}

@@ -105,7 +105,7 @@ int solve() {
 		if (type == 0) {
 			st.update(a, b);
 		} else {
-			cout << st.query(a, b) << '\n';
+			cout << st.query(a, b - 1) << '\n';
 		}
 	}
 
