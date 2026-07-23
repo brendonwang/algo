@@ -29,15 +29,15 @@ const int MOD = 998244353;
 const int MAXN = 2e5 + 5;
 
 int solve() {
-	return 0;
+  return 0;
 }
 
 int main() {
-	cin.tie(0)->sync_with_stdio(0);
-	int T = 1;
-	//	cin >> T;
-	while (T--) {
-		solve();
-	}
-	return 0;
+  cin.tie(0)->sync_with_stdio(0);
+  int T = 1;
+  //	cin >> T;
+  while (T--) {
+  	solve();
+  }
+  return 0;
 }
