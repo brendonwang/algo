@@ -94,7 +94,7 @@ const ll MAXN = 2e5 + 5;
 int solve() {
 	int n, q;
 	cin >> n >> q;
-	treap<ll, (int) 5e5 + 5> tr(0, [](auto a, auto b) { return a + b; });
+	treap tr(0ll, [](auto a, auto b) { return a + b; }, [](auto &a, auto b, int sz){}, 0ll, [](auto &a, auto b){});
 	for (int i = 0; i < n; ++i) {
 		int v;
 		cin >> v;
@@ -104,7 +104,7 @@ int solve() {
 		int type, a, b;
 		cin >> type >> a >> b;
 		if (type == 0) {
-			tr.update(a, b);
+			tr.change(a, b, [](auto &x, auto y) {x += y;});
 		} else {
 			cout << tr.query(a, b - 1) << '\n';
 		}

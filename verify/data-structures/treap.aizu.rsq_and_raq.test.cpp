@@ -94,10 +94,11 @@ const ll MAXN = 2e5 + 5;
 int solve() {
 	int n, q;
 	cin >> n >> q;
-	treap<ll, (int) 5e5 + 5> tr(0, [](auto a, auto b) { return a + b; },
-	                            [](auto &a, auto b, int sz) {
+  treap tr(0ll, [](ll a, ll b) { return a + b; },
+	                            [](ll &a, ll b, int sz) {
 		                            a += b * sz;
-	                            });
+	                            }, 0ll, [](ll &a, ll b){a += b;});
+
 	for (int i = 0; i < n; ++i) {
 		tr.insert(i, 0);
 	}
@@ -108,7 +109,7 @@ int solve() {
 			int l, r, x;
 			cin >> l >> r >> x;
 			l--, r--;
-			tr.update(l, r, x);
+			tr.apply(l, r, x);
 		} else {
 			int l, r;
 			cin >> l >> r;
