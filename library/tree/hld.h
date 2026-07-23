@@ -75,7 +75,7 @@ struct hld {
 	T query(int a, int b) {
 		T res = unit;
 		query_path(a, b, [&](auto x, auto y) {
-			res = f(res, st.query(x, y + 1));
+			res = f(res, st.query(x, y));
 		});
 		return res;
 	}
